@@ -5,7 +5,7 @@ import os
 DB_CONFIG = {
     'host': os.environ.get('DB_HOST', 'localhost'),
     'user': os.environ.get('DB_USER', 'root'),
-    'password': os.environ.get('DB_PASS', 'riga'),
+    'password': os.environ.get('DB_PASS', 'pass'),
     'database': os.environ.get('DB_NAME', 'extremeclean_db'),
     'charset': 'utf8mb4',
     'autocommit': False
