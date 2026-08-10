@@ -1,0 +1,3 @@
+mysql-connector-python>=8.0.0
+# Africa's Talking SDK (optional - sms.py uses urllib directly, no extra install needed)
+# africastalking>=1.2.5

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Extremeclean Carwash — Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="login-screen">
+  <div class="login-bg">
+    <div class="login-bubble b1"></div>
+    <div class="login-bubble b2"></div>
+    <div class="login-bubble b3"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">⬡</div>
+      <div>
+        <div class="login-brand">EXTREMECLEAN</div>
+        <div class="login-sub">Carwash Nairobi</div>
+      </div>
+    </div>
+    <h2 class="login-title">Welcome back</h2>
+    <p class="login-desc">Sign in to manage your carwash operations</p>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="username"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <div id="login-error" class="login-error" style="display:none"></div>
+    <button class="btn-login" onclick="doLogin()">
+      <span>Sign In</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="login-hint">Default: admin / admin123</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none" class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-hex">⬡</div>
+        <div>
+          <div class="brand-name">EXTREMECLEAN</div>
+          <div class="brand-sub">Nairobi</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" data-page="bookings" onclick="showPage('bookings')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Bookings
+        <span class="nav-badge" id="badge-bookings" style="display:none">0</span>
+      </a>
+      <a class="nav-item" data-page="tracking" onclick="showPage('tracking')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Live Tracking
+      </a>
+      <a class="nav-item" data-page="customers" onclick="showPage('customers')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Customers
+      </a>
+      <a class="nav-item" data-page="employees" onclick="showPage('employees')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Employees
+      </a>
+      <a class="nav-item" data-page="tasks" onclick="showPage('tasks')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Tasks
+      </a>
+      <a class="nav-item" data-page="services" onclick="showPage('services')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Services
+      </a>
+      <a class="nav-item" data-page="notifications" onclick="showPage('notifications')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+        <span class="nav-badge" id="badge-notif" style="display:none">0</span>
+      </a>
+      <a class="nav-item" data-page="analytics" onclick="showPage('analytics')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" data-page="settings" onclick="showPage('settings')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+      <a class="nav-item nav-portal" onclick="window.open('/portal','_blank')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Customer Portal ↗
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div>
+          <div class="user-name" id="user-name">Admin</div>
+          <div class="user-role" id="user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()" title="Logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-menu" onclick="toggleSidebar()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="page-title" id="page-title">Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="live-indicator">
+          <span class="live-dot"></span> Live
+        </div>
+        <div class="current-time" id="current-time"></div>
+        <button class="btn-icon" onclick="showPage('notifications')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="btn-badge" id="top-notif-badge" style="display:none">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- PAGE VIEWS -->
+    <div class="page-container">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page active">
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card cyan">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value" id="stat-today">—</div>
+            <div class="stat-label">Today's Bookings</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="stat-completed">—</div>
+            <div class="stat-label">Completed</div>
+          </div>
+          <div class="stat-card orange">
+            <div class="stat-icon">🔄</div>
+            <div class="stat-value" id="stat-progress">—</div>
+            <div class="stat-label">In Progress</div>
+          </div>
+          <div class="stat-card yellow">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value" id="stat-pending">—</div>
+            <div class="stat-label">Pending</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="stat-customers">—</div>
+            <div class="stat-label">Total Customers</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon">👨‍🔧</div>
+            <div class="stat-value" id="stat-employees">—</div>
+            <div class="stat-label">Active Staff</div>
+          </div>
+          <div class="stat-card emerald wide">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="stat-revenue">—</div>
+            <div class="stat-label">Revenue Today (KES)</div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Today's Schedule</h3>
+              <button class="btn-sm" onclick="showPage('bookings')">View All →</button>
+            </div>
+            <div id="today-bookings" class="booking-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Quick Actions</h3>
+            </div>
+            <div class="quick-actions">
+              <button class="qa-btn" onclick="openModal('booking')">
+                <span class="qa-icon">+</span>New Booking
+              </button>
+              <button class="qa-btn" onclick="openModal('customer')">
+                <span class="qa-icon">+</span>Add Customer
+              </button>
+              <button class="qa-btn" onclick="showPage('tracking')">
+                <span class="qa-icon">📡</span>Live Tracking
+              </button>
+              <button class="qa-btn" onclick="showPage('analytics')">
+                <span class="qa-icon">📊</span>Analytics
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS PAGE -->
+      <div id="page-bookings" class="page">
+        <div class="page-header">
+          <div class="search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search bookings..." id="booking-search" oninput="filterBookings()"/>
+          </div>
+          <div class="filter-row">
+            <select id="booking-status-filter" onchange="filterBookings()">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <input type="date" id="booking-date-filter" onchange="filterBookings()"/>
+            <button class="btn-primary" onclick="openModal('booking')">+ New Booking</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="bookings-table">
+            <thead><tr>
+              <th>#</th><th>Customer</th><th>Service</th><th>Date</th>
+              <th>Time</th><th>Vehicle</th><th>Staff</th><th>Price</th>
+              <th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="bookings-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LIVE TRACKING PAGE -->
+      <div id="page-tracking" class="page">
+        <div class="tracking-header">
+          <h2>Real-Time Service Tracking</h2>
+          <button class="btn-primary" onclick="loadTracking()">↻ Refresh</button>
+        </div>
+        <div class="tracking-lanes" id="tracking-lanes">
+          <div class="lane">
+            <div class="lane-header pending-h">⏳ Pending</div>
+            <div class="lane-cards" id="lane-pending"></div>
+          </div>
+          <div class="lane">
+            <div class="lane-header confirmed-h">✅ Confirmed</div>
+            <div class="lane-cards" id="lane-confirmed"></div>
+          </div>
+          <div class="lane">
+            <div class="lane-header progress-h">🔄 In Progress</div>
+            <div class="lane-cards" id="lane-inprogress"></div>
+          </div>
+          <div class="lane">
+            <div class="lane-header done-h">🏁 Completed</div>
+            <div class="lane-cards" id="lane-completed"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUSTOMERS PAGE -->
+      <div id="page-customers" class="page">
+        <div class="page-header">
+          <div class="search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search customers..." id="customer-search" oninput="loadCustomers()"/>
+          </div>
+          <button class="btn-primary" onclick="openModal('customer')">+ Add Customer</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr>
+              <th>#</th><th>Name</th><th>Phone</th><th>Email</th>
+              <th>Vehicle</th><th>Type</th><th>Visits</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="customers-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES PAGE -->
+      <div id="page-employees" class="page">
+        <div class="page-header">
+          <h2>Staff Management</h2>
+          <button class="btn-primary" onclick="openModal('employee')">+ Add Employee</button>
+        </div>
+        <div class="employee-grid" id="employee-grid"></div>
+      </div>
+
+      <!-- TASKS PAGE -->
+      <div id="page-tasks" class="page">
+        <div class="page-header">
+          <h2>Task Board</h2>
+          <div class="filter-row">
+            <select id="task-emp-filter" onchange="loadTasks()">
+              <option value="">All Staff</option>
+            </select>
+            <select id="task-status-filter" onchange="loadTasks()">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr>
+              <th>#</th><th>Task</th><th>Employee</th><th>Service</th>
+              <th>Vehicle</th><th>Priority</th><th>Status</th><th>Assigned</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="tasks-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SERVICES PAGE -->
+      <div id="page-services" class="page">
+        <div class="page-header">
+          <h2>Services</h2>
+          <button class="btn-primary" onclick="openModal('service')">+ Add Service</button>
+        </div>
+        <div class="services-grid" id="services-grid"></div>
+      </div>
+
+      <!-- NOTIFICATIONS PAGE -->
+      <div id="page-notifications" class="page">
+        <div class="page-header">
+          <h2>Notifications</h2>
+          <div class="filter-row">
+            <label class="toggle-label">
+              <input type="checkbox" id="unread-only" onchange="loadNotifications()"/> Unread only
+            </label>
+            <button class="btn-secondary" onclick="markAllRead()">Mark all read</button>
+          </div>
+        </div>
+        <div id="notifications-list" class="notifications-list"></div>
+      </div>
+
+      <!-- ANALYTICS PAGE -->
+      <div id="page-analytics" class="page">
+        <h2 class="section-title">Analytics Overview</h2>
+        <div class="analytics-grid">
+          <div class="card chart-card">
+            <div class="card-header"><h3>Revenue — Last 7 Days</h3></div>
+            <canvas id="chart-revenue" height="200"></canvas>
+          </div>
+          <div class="card chart-card">
+            <div class="card-header"><h3>Booking Status Breakdown</h3></div>
+            <canvas id="chart-status" height="200"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Top Services</h3></div>
+            <div id="top-services-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Staff Performance</h3></div>
+            <div id="emp-perf-list"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- SETTINGS PAGE -->
+      <div id="page-settings" class="page">
+        <h2 class="section-title">System Settings</h2>
+        <div class="settings-grid">
+
+          <!-- Business Info -->
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3>🏢 Business Information</h3>
+            </div>
+            <div class="settings-body">
+              <div class="form-group">
+                <label>Business Name</label>
+                <input type="text" id="s-biz-name" value="Extremeclean Carwash Nairobi"/>
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="s-biz-phone" placeholder="e.g. 0700000000"/>
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="text" id="s-biz-email" placeholder="e.g. info@extremeclean.co.ke"/>
+              </div>
+              <div class="form-group">
+                <label>Location / Address</label>
+                <input type="text" id="s-biz-addr" placeholder="e.g. Westlands, Nairobi"/>
+              </div>
+              <div class="form-group">
+                <label>Opening Hours</label>
+                <input type="text" id="s-biz-hours" value="Mon-Sun: 7:00 AM - 6:00 PM"/>
+              </div>
+              <button class="btn-primary" onclick="saveBizInfo()">Save Business Info</button>
+            </div>
+          </div>
+
+          <!-- Change Password -->
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3>🔐 Change Admin Password</h3>
+            </div>
+            <div class="settings-body">
+              <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" id="s-old-pass" placeholder="Enter current password"/>
+              </div>
+              <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="s-new-pass" placeholder="Enter new password"/>
+              </div>
+              <div class="form-group">
+                <label>Confirm New Password</label>
+                <input type="password" id="s-confirm-pass" placeholder="Repeat new password"/>
+              </div>
+              <button class="btn-primary" onclick="changePassword()">Update Password</button>
+            </div>
+          </div>
+
+          <!-- Africa's Talking SMS -->
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3>📱 Africa's Talking SMS</h3>
+              <span class="sms-status-badge" id="sms-status-badge">Checking...</span>
+            </div>
+            <div class="settings-body">
+              <div class="settings-info-box">
+                SMS credentials are set via environment variables on your server. To configure:
+              </div>
+              <div class="env-block">
+                <div class="env-row"><span class="env-key">AT_USERNAME</span><span class="env-val">your_username</span></div>
+                <div class="env-row"><span class="env-key">AT_API_KEY</span><span class="env-val">your_api_key</span></div>
+                <div class="env-row"><span class="env-key">AT_SENDER_ID</span><span class="env-val">EXTREMECLEAN</span></div>
+                <div class="env-row"><span class="env-key">AT_SANDBOX</span><span class="env-val">0 (live) / 1 (test)</span></div>
+              </div>
+              <div class="form-group" style="margin-top:14px">
+                <label>Test SMS — Send to number</label>
+                <div style="display:flex;gap:8px">
+                  <input type="tel" id="s-test-phone" placeholder="07XXXXXXXX" style="flex:1"/>
+                  <button class="btn-primary" onclick="sendTestSms()">Send Test</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Portal -->
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3>🌐 Customer Portal</h3>
+            </div>
+            <div class="settings-body">
+              <div class="portal-link-box">
+                <div class="portal-link-label">Portal URL</div>
+                <div class="portal-link-url" id="portal-url">Loading...</div>
+                <button class="btn-sm" onclick="copyPortalLink()">Copy Link</button>
+                <button class="btn-sm" onclick="window.open('/portal','_blank')">Open Portal ↗</button>
+              </div>
+              <div style="margin-top:16px">
+                <div class="settings-stat-row">
+                  <span>Total portal bookings</span>
+                  <span class="settings-stat-val" id="s-portal-count">—</span>
+                </div>
+                <div class="settings-stat-row">
+                  <span>Customers registered via portal</span>
+                  <span class="settings-stat-val" id="s-portal-customers">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Overview -->
+          <div class="card settings-card settings-card-wide">
+            <div class="card-header">
+              <h3>⚙️ System Overview</h3>
+              <button class="btn-sm" onclick="loadSettings()">↻ Refresh</button>
+            </div>
+            <div class="settings-body">
+              <div class="sys-stats-grid" id="sys-stats-grid">
+                <div class="sys-stat"><div class="sys-stat-val" id="ss-bookings">—</div><div class="sys-stat-label">Total Bookings</div></div>
+                <div class="sys-stat"><div class="sys-stat-val" id="ss-customers">—</div><div class="sys-stat-label">Total Customers</div></div>
+                <div class="sys-stat"><div class="sys-stat-val" id="ss-employees">—</div><div class="sys-stat-label">Employees</div></div>
+                <div class="sys-stat"><div class="sys-stat-val" id="ss-services">—</div><div class="sys-stat-label">Active Services</div></div>
+                <div class="sys-stat"><div class="sys-stat-val" id="ss-revenue">—</div><div class="sys-stat-label">Total Revenue (KES)</div></div>
+                <div class="sys-stat"><div class="sys-stat-val" id="ss-notifs">—</div><div class="sys-stat-label">Unread Notifications</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin Users -->
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3>👤 Admin Users</h3>
+              <button class="btn-sm" onclick="openModal('newuser')">+ Add User</button>
+            </div>
+            <div class="settings-body">
+              <div id="admin-users-list">
+                <div class="admin-user-row">
+                  <div class="admin-user-av">A</div>
+                  <div>
+                    <div class="admin-user-name">admin</div>
+                    <div class="admin-user-role">Administrator</div>
+                  </div>
+                  <span class="badge badge-active" style="margin-left:auto">active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking Rules -->
+          <div class="card settings-card">
+            <div class="card-header">
+              <h3>📋 Booking Rules</h3>
+            </div>
+            <div class="settings-body">
+              <div class="form-group">
+                <label>Max bookings per day</label>
+                <input type="number" id="s-max-bookings" value="30" min="1" max="100"/>
+              </div>
+              <div class="form-group">
+                <label>Earliest booking time</label>
+                <input type="time" id="s-open-time" value="07:00"/>
+              </div>
+              <div class="form-group">
+                <label>Latest booking time</label>
+                <input type="time" id="s-close-time" value="17:00"/>
+              </div>
+              <div class="form-group">
+                <label>Auto-confirm portal bookings</label>
+                <select id="s-auto-confirm">
+                  <option value="0">No — require manual confirmation</option>
+                  <option value="1">Yes — confirm automatically</option>
+                </select>
+              </div>
+              <button class="btn-primary" onclick="saveBookingRules()">Save Rules</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- end page-container -->
+  </main>
+</div>
+
+<!-- MODALS -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 id="modal-title">Modal</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="modal-submit" onclick="submitModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
